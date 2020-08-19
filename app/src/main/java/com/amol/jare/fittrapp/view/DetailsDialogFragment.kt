@@ -40,6 +40,8 @@ class DetailsDialogFragmen(firstFragment: Context) : DialogFragment() {
         Glide.with(requireContext()!!)
             .load(albumImageUrl)
             .centerCrop()
+            .error(R.drawable.ic_user)
+            .placeholder(R.drawable.ic_user)
             .diskCacheStrategy(DiskCacheStrategy.ALL)
             .into(ivProfile)
 

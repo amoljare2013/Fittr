@@ -67,6 +67,9 @@ class ListAdapter internal constructor(
             Glide.with(context!!)
                 .load(fittrResp.profilepic)
                 .centerCrop()
+                .error(R.drawable.ic_user)
+                .placeholder(R.drawable.ic_user)
+                .circleCrop()
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .into(ivProfile)
         }
