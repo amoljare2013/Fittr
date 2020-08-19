@@ -1,25 +1,26 @@
 package com.amol.jare.fittrapp.view
 
-import android.graphics.drawable.ClipDrawable
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
+import android.widget.ExpandableListView
+import android.widget.ExpandableListView.OnGroupClickListener
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
-import androidx.recyclerview.widget.DividerItemDecoration
 import com.amol.jare.fittrapp.R
 import com.amol.jare.fittrapp.adapter.ListAdapter
+import com.amol.jare.fittrapp.model.ExpandableListData
 import com.amol.jare.fittrapp.viewModel.ListViewModel
-import com.ankit.jare.utils.NetworkConnecitity
-import kotlinx.android.synthetic.main.fragment_list.*
-import java.lang.NullPointerException
+
 
 class ListFragment : Fragment() {
 
     lateinit var viewModel: ListViewModel
-    private lateinit var adapter: ListAdapter
+
+    private var expandableListView: ExpandableListView? = null
+    private var adapter: ListAdapter? = null
+    private var titleList: List<String>? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -31,27 +32,22 @@ class ListFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val decoration = DividerItemDecoration(requireContext(), ClipDrawable.HORIZONTAL)
-        listrcv.addItemDecoration(decoration)
         viewModel = ViewModelProviders.of(this@ListFragment).get(ListViewModel::class.java)
+        viewModel.fetchRepoList()
 
-        try {
-            if (NetworkConnecitity.isNetworkAvailable(requireContext())) {
-                viewModel.fetchRepoList()
-            } else {
-                Toast.makeText(
-                    requireContext(),
-                    getString(R.string.network_message),
-                    Toast.LENGTH_SHORT
-                ).show()
-            }
+        expandableListView = view.findViewById(R.id.expendableList)
+        if (expandableListView != null) {
+            val listData = ExpandableListData.data
+            titleList = ArrayList(listData.keys)
+            adapter = ListAdapter(requireContext(), titleList as ArrayList<String>, listData)
+            expandableListView!!.setAdapter(adapter)
+            for (i in 0 until adapter!!.groupCount) expandableListView!!.expandGroup(i)
 
-        } catch (e: NullPointerException) {
-            e.printStackTrace()
+            expandableListView!!.setOnGroupClickListener(OnGroupClickListener { parent, v, groupPosition, id ->
+                true
+            })
+
         }
-
-//        view.findViewById<Button>(R.id.button_second).setOnClickListener {
-//            findNavController().navigate(R.id.action_SecondFragment_to_FirstFragment)
-//        }
     }
+
 }

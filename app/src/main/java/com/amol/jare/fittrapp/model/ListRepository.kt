@@ -12,7 +12,8 @@ class ListRepository {
         try {
             ApiClient.instance.getList().enqueue(object : Callback<fittrResponse> {
                 override fun onResponse(
-                    call: Call<fittrResponse>?,response: Response<fittrResponse>?) {
+                    call: Call<fittrResponse>?, response: Response<fittrResponse>?
+                ) {
                     if (response != null && response.isSuccessful) {
                         onResult(true, response.body()!!)
                     } else {

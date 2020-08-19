@@ -1,8 +1,11 @@
 package com.amol.jare.fittrapp.viewModel
 
 import com.amol.jare.fittrapp.model.ListRepository
+import com.amol.jare.fittrapp.model.api.fittrResp
 
 class ListViewModel : BaseViewModel() {
+
+    private var expandableListDetail = HashMap<String, MutableList<fittrResp>>()
 
     fun fetchRepoList() {
         try {
